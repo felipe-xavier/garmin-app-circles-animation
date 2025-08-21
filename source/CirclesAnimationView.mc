@@ -106,8 +106,10 @@ class Circle {
         // Create color with alpha using the same format as 0x40FFFFFF
         // Format: 0xAARRGGBB where AA=alpha, RR=red, GG=green, BB=blue
         var colorWithAlpha = (alphaValue << 24) | (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
+
+        var isCircleFilled = SettingsStorage.getIsCircleFilled();
         
-        if (dc has :setFill) {
+        if (dc has :setFill && isCircleFilled) {
             dc.setFill(colorWithAlpha);
             dc.fillCircle(x, y, radius);
         } else {
