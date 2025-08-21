@@ -39,6 +39,17 @@ class CirclesAnimationDelegate extends WatchUi.BehaviorDelegate {
         return false; // Indicate that the key event was not handled
     }
 
+    function onSwipe(swipeEvent as WatchUi.SwipeEvent) {
+        var direction = swipeEvent.getDirection();
+
+        if (direction == WatchUi.SWIPE_LEFT) {
+            openMenu();
+            return true;
+        }
+ 
+        return false;
+    }
+
     function openMenu() as Boolean {
         WatchUi.pushView((new MainMenu()).getView(), new MainMenuViewDelegate(), WatchUi.SLIDE_UP);
         return true;
