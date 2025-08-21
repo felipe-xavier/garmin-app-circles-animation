@@ -91,7 +91,6 @@ class Circle {
         
         // Update alpha (fade out over time)
         alpha = 1.0 - progress;
-        System.println("Progress: " + progress + " Alpha: " + alpha);
         
         return true; // Keep this circle
     }
@@ -124,6 +123,8 @@ class CirclesAnimationView extends WatchUi.View {
     var colorIndex as Number = 0;
     var animationTimer as Timer.Timer?;
     var isPaused as Boolean = false;
+    var screenWidth as Number = 0;
+    var screenHeight as Number = 0;
 
     function initialize() {
         View.initialize();
@@ -135,6 +136,8 @@ class CirclesAnimationView extends WatchUi.View {
     function onLayout(dc as Dc) as Void {
         // Don't set a layout as we're doing custom drawing
         // setLayout(Rez.Layouts.MainLayout(dc));
+        screenWidth = dc.getWidth();
+        screenHeight = dc.getHeight();
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -142,7 +145,10 @@ class CirclesAnimationView extends WatchUi.View {
     // loading resources into memory.
     function onShow() as Void {
         System.println("onShow called - starting timer");
-
+        var autoAdd = SettingsStorage.getIsCirclesAutomaticallyAdded();
+        if (autoAdd) {
+            ensureAutoAddTimerStarted();
+        }
     }
 
     // Update the view
@@ -176,6 +182,7 @@ class CirclesAnimationView extends WatchUi.View {
         // Stop animation timer
         if (animationTimer != null) {
             animationTimer.stop();
+            animationTimer = null;
         }
     }
     function onPause() as Void {
@@ -184,6 +191,10 @@ class CirclesAnimationView extends WatchUi.View {
     }
     function onResume() as Void {
         isPaused = false;
+        var autoAdd = SettingsStorage.getIsCirclesAutomaticallyAdded();
+        if (autoAdd) {
+            ensureAutoAddTimerStarted();
+        }
         WatchUi.requestUpdate();
     }
     
@@ -209,6 +220,35 @@ class CirclesAnimationView extends WatchUi.View {
         }
         
         // Request a screen update
+        WatchUi.requestUpdate();
+    }
+
+    function ensureAutoAddTimerStarted() as Void {
+        if (animationTimer == null) {
+            animationTimer = new Timer.Timer();
+            // Add a circle every 800ms
+            animationTimer.start(method(:spawnRandomCircle), 800, true);
+        }
+    }
+
+    function spawnRandomCircle() as Void {
+        if (isPaused) {
+            return;
+        }
+
+        // If settings changed at runtime, respect it without recreating timer
+        if (!SettingsStorage.getIsCirclesAutomaticallyAdded()) {
+            return;
+        }
+
+        if (screenWidth <= 0 || screenHeight <= 0) {
+            // Dimensions not ready yet; try again on next tick
+            return;
+        }
+
+        var x = (Math.rand() % screenWidth).toNumber();
+        var y = (Math.rand() % screenHeight).toNumber();
+        addCircle(x, y);
         WatchUi.requestUpdate();
     }
 }

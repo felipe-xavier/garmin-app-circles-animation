@@ -2,5 +2,5 @@
     <property id="appVersion" type="string">1.3.0</property>
     <property id="isBlackBackgroundColor" type="boolean">true</property>
     <property id="isCircleFilled" type="boolean">true</property>
-    <property id="isCirclesAutomaticallyAdded" type="boolean">false</property>
+    <property id="isCirclesAutomaticallyAdded" type="boolean">true</property>
 </properties>
