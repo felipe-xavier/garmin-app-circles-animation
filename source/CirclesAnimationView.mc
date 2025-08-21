@@ -138,6 +138,8 @@ class CirclesAnimationView extends WatchUi.View {
         // setLayout(Rez.Layouts.MainLayout(dc));
         screenWidth = dc.getWidth();
         screenHeight = dc.getHeight();
+
+        SettingsStorage.setIsDcFillAvailable(dc has :setFill);
     }
 
     // Called when this View is brought to the foreground. Restore
@@ -145,8 +147,9 @@ class CirclesAnimationView extends WatchUi.View {
     // loading resources into memory.
     function onShow() as Void {
         System.println("onShow called - starting timer");
+        var isTouchScreenAvailable = isTouchScreenAvailable();
         var autoAdd = SettingsStorage.getIsCirclesAutomaticallyAdded();
-        if (autoAdd) {
+        if (autoAdd || !isTouchScreenAvailable) {
             ensureAutoAddTimerStarted();
         }
     }

@@ -16,6 +16,9 @@ class MainMenu {
     }
 
     private function setMenu() {
+        var isTouchScreenAvailable = isTouchScreenAvailable();
+        var isDcFillAvailable = SettingsStorage.getIsDcFillAvailable();
+
         _menu.addItem(new WatchUi.ToggleMenuItem(
             "Background Color",
             {:enabled=>"black", :disabled=>"white"},
@@ -24,19 +27,24 @@ class MainMenu {
             null
         ));
 
-        _menu.addItem(new WatchUi.ToggleMenuItem(
-            "Circles",
-            {:enabled=>"filled", :disabled=>"outline"},
-            SettingsStorage.isCircleFilledKey,
-            SettingsStorage.getIsCircleFilled(),
-            null
-        ));
-        _menu.addItem(new WatchUi.ToggleMenuItem(
-            "Circles Added",
-            {:enabled=>"automatically", :disabled=>"manually"},
-            SettingsStorage.isCirclesAutomaticallyAddedKey,
-            SettingsStorage.getIsCirclesAutomaticallyAdded(),
-            null
-        ));
+        if(isDcFillAvailable) {
+            _menu.addItem(new WatchUi.ToggleMenuItem(
+                "Circles",
+                {:enabled=>"filled", :disabled=>"outline"},
+                SettingsStorage.isCircleFilledKey,
+                SettingsStorage.getIsCircleFilled(),
+                null
+            ));
+        }
+        
+        if(isTouchScreenAvailable) {
+            _menu.addItem(new WatchUi.ToggleMenuItem(
+                "Circles Added",
+                {:enabled=>"automatically", :disabled=>"manually"},
+                SettingsStorage.isCirclesAutomaticallyAddedKey,
+                SettingsStorage.getIsCirclesAutomaticallyAdded(),
+                null
+            ));
+        }
     }
 }

@@ -7,6 +7,8 @@ class SettingsStorage {
     static var isBlackBackgroundColorKey = "isBlackBackgroundColor";
     static var isCircleFilledKey = "isCircleFilled";
     static var isCirclesAutomaticallyAddedKey = "isCirclesAutomaticallyAdded";
+    static var isDcFillAvailableKey = "isDcFillAvailable";
+    static var isDcFillAvailable = false;
 
     static function getIsBlackBackgroundColor() {
         return Application.Properties.getValue(isBlackBackgroundColorKey);
@@ -30,5 +32,13 @@ class SettingsStorage {
     
     static function setIsCirclesAutomaticallyAdded(value) {
         Application.Properties.setValue(isCirclesAutomaticallyAddedKey, value);
+    }
+
+    static function getIsDcFillAvailable() {
+        return isDcFillAvailable;
+    }
+    
+    static function setIsDcFillAvailable(value) {
+        isDcFillAvailable = value;
     }
 }
