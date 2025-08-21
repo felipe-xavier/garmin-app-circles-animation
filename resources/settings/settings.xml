@@ -1,0 +1,15 @@
+<settings>
+
+    <setting propertyKey="@Properties.isBlackBackgroundColor" title="Black Background Color (False for White)">
+        <settingConfig type="boolean" required="true" />
+    </setting>
+
+    <setting propertyKey="@Properties.isCircleFilled" title="Circle Filled (False for Outline)">
+        <settingConfig type="boolean" required="true" />
+    </setting>
+
+    <setting propertyKey="@Properties.isCirclesAutomaticallyAdded" title="Circles Randomly And Automatically Added">
+        <settingConfig type="boolean" required="true" />
+    </setting>
+    
+</settings>

@@ -106,7 +106,6 @@ class Circle {
         // Create color with alpha using the same format as 0x40FFFFFF
         // Format: 0xAARRGGBB where AA=alpha, RR=red, GG=green, BB=blue
         var colorWithAlpha = (alphaValue << 24) | (rgb[0] << 16) | (rgb[1] << 8) | rgb[2];
-        System.println("Alpha: " + alphaValue + " RGB: [" + rgb[0] + "," + rgb[1] + "," + rgb[2] + "] Color: 0x" + colorWithAlpha.format("%08X"));
         
         if (dc has :setFill) {
             dc.setFill(colorWithAlpha);
@@ -147,7 +146,12 @@ class CirclesAnimationView extends WatchUi.View {
     // Update the view
     function onUpdate(dc as Dc) as Void {
         // Clear the screen with white background for better visibility
-        dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        var isBlackBackgroundColor = SettingsStorage.getIsBlackBackgroundColor();
+        if (isBlackBackgroundColor) {
+            dc.setColor(Graphics.COLOR_BLACK, Graphics.COLOR_BLACK);
+        } else {
+            dc.setColor(Graphics.COLOR_WHITE, Graphics.COLOR_WHITE);
+        }
         dc.clear();
 
         if (!isPaused) {
@@ -184,7 +188,6 @@ class CirclesAnimationView extends WatchUi.View {
     function addCircle(x as Number, y as Number) as Void {
         var color = COLORS[colorIndex];
         circles.add(new Circle(x, y, color));
-        System.println("Added circle at " + x + ", " + y + " with color " + color);
         
         // Cycle to next color
         colorIndex = (colorIndex + 1) % COLORS.size();
@@ -198,7 +201,6 @@ class CirclesAnimationView extends WatchUi.View {
         while (i < circles.size()) {
             if (!circles[i].update(currentTime)) {
                 circles.remove(circles[i]);
-                System.println("Removed expired circle");
             } else {
                 i++;
             }
