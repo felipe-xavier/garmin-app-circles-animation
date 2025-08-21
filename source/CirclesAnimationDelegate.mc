@@ -10,9 +10,6 @@ class CirclesAnimationDelegate extends WatchUi.BehaviorDelegate {
         _view = view;
     }
 
-    function onMenu() as Boolean {
-        return true;
-    }
 
     function onTap(clickEvent as WatchUi.ClickEvent) as Boolean {
         var coords = clickEvent.getCoordinates();
@@ -25,6 +22,10 @@ class CirclesAnimationDelegate extends WatchUi.BehaviorDelegate {
     }
 
     function onKeyPressed(keyEvent as KeyEvent) as Boolean {
+
+        if (keyEvent.getKey() == WatchUi.KEY_UP) {
+            return openMenu();
+        }
         
         if (keyEvent.getKey() == WatchUi.KEY_ENTER) {
             if (_view.isPaused) {
@@ -36,6 +37,11 @@ class CirclesAnimationDelegate extends WatchUi.BehaviorDelegate {
         }
 
         return false; // Indicate that the key event was not handled
+    }
+
+    function openMenu() as Boolean {
+        WatchUi.pushView((new MainMenu()).getView(), new MainMenuViewDelegate(), WatchUi.SLIDE_UP);
+        return true;
     }
 
 }
